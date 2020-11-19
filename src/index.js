@@ -1,8 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import '@atlaskit/css-reset'
+import { DragDropContext } from 'react-beautiful-dnd';
+import initialData from './initial_data'
+import Column from './column'
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = initialData;
+  }
+
+  onDragEnd = result => {
+    // todo
+  }
+
+  render() {
+    return (<DragDropContext onDragEnd={this.onDragEnd}>
+      {this.state.columnOrder.map(columnId => {
+        const column = this.state.columns[columnId];
+        const tasks  = column.taskIds.map(i => this.state.tasks[i]);
+
+        return <Column key={columnId} column={column} tasks={tasks}/>
+      })}
+    </DragDropContext>
+)
+  }
+}
+
 
 ReactDOM.render(
   <React.StrictMode>
@@ -10,8 +35,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
