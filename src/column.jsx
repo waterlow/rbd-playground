@@ -9,10 +9,11 @@ const Container = styled.div`
   border-radius: 2px;
 `;
 const Title = styled.h3`
-  padding: 8px
+  padding: 8px;
 `
 const TaskList = styled.div`
-  padding: 8px
+  padding: 8px;
+  background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
 `
 
 export default class Column extends React.Component {
@@ -21,10 +22,11 @@ export default class Column extends React.Component {
       <Container>
         <Title>{this.props.column.title}</Title>
         <Droppable droppableId={this.props.column.id}>
-          {(provided) => (
+          {(provided, snapshot) => (
             <TaskList
               ref={provided.innerRef}
               {...provided.droppableProps}
+              isDraggingOver={snapshot.isDraggingOver}
             >
               {this.props.tasks.map((t, i) => <Task key={t.id} task={t} index={i} />)}
               {provided.placeholder}
